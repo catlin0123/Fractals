@@ -1,5 +1,11 @@
-#pragma once
+#ifndef __UIWINDOW_H__
+#define __UIWINDOW_H__
+
+#include <vector>
+
 #include "Structs.h"
+
+using namespace std;
 
 class UIWindow
 {
@@ -14,4 +20,6 @@ public:
 	//Functions
 	void Init();
 };
+
+#endif
 

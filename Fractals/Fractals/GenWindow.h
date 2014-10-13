@@ -1,5 +1,11 @@
-#pragma once
+#ifndef __GENWINDOW_H__
+#define __GENWINDOW_H__
+
+#include <vector>
+
 #include "Structs.h"
+
+using namespace std;
 
 class GenWindow
 {
@@ -13,4 +19,6 @@ public:
 	//Functions
 	void Init();
 };
+
+#endif
 

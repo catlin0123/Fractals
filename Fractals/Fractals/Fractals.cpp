@@ -1,13 +1,13 @@
 /*************************************************************************//**
 * @file
 *
-* @mainpage Program 1 - Fractals
+* @mainpage Program 2 - Fractals
 *
 * @section course_section Course Information
 *
 * @author Paul Blasi, Caitlin Taggart
 *
-* @date <program date due>
+* @date 24 October, 2014
 *
 * @par Professor:
 *         Dr. Weiss
@@ -26,16 +26,16 @@
 *
 * @par Compiling Instructions:
 @verbatim
-c:\> make pong
+c:\> make fractals
 @endverbatim
 *
 * @par Usage:
 @verbatim
 On Windows:
-c:\> pong.exe
+c:\> fractals.exe
 
 On Linux:
-c:\> ./pong
+c:\> ./fractals
 @endverbatim
 * After starting the application, the user should draw a rough sketch of the initial
 * fractal shape on the left hand screen. When the user finishes, they should enter 3

@@ -9,8 +9,6 @@ void UIWindow::Init(int x, int y, int width, int height)
 	glutInitWindowSize(width, height);
 	glutInitWindowPosition(x, y);
 	_windowID = glutCreateWindow("Draw");
-
-	glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
 void UIWindow::GenerateFractal()
@@ -28,7 +26,9 @@ void UIWindow::Display()
 	glutSetWindow(_windowID);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glFlush();
+
+	//glFlush();
+	glutSwapBuffers();
 }
 
 void UIWindow::Reshape(int width, int height)

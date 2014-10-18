@@ -8,8 +8,6 @@ void GenWindow::Init(int x, int y, int width, int height)
 	glutInitWindowSize(width, height);
 	glutInitWindowPosition(x, y);
 	_windowID = glutCreateWindow("Fractal");
-
-	glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
 void GenWindow::Display()
@@ -17,7 +15,9 @@ void GenWindow::Display()
 	glutSetWindow(_windowID);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glFlush();
+
+	//glFlush();
+	glutSwapBuffers();
 }
 
 void GenWindow::Reshape(int width, int height)

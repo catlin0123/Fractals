@@ -75,6 +75,13 @@ Oct 17, 2014  Finalized setup of project. Classes are going to be "static"
 			   ~  UIWindow.cpp
 			   ~  GenWindow.h
 			   ~  UIWindow.h
+			   
+Oct 17, 2014  Switched to double buffering, as that seems like the only way
+    09:05 PM  to have a black screen on startup.
+			  Files modified:
+			   ~  Fractals.cpp
+			   ~  GenWindow.cpp
+			   ~  UIWindow.cpp
 @endverbatim
 *
 *****************************************************************************/
@@ -96,9 +103,10 @@ void GenerateFractal();
 //Constants
 const unsigned char ESCAPE_KEY = 27;
 
+const int INIT_SCREEN_WIDTH = 500;
+const int INIT_SCREEN_HEIGHT = 500;
+
 //Global Data
-int gScreenWidth = 400;
-int gScreenHeight = 400;
 
 /**************************************************************************//**
 * @author Paul Blasi, Caitlin Taggart
@@ -112,11 +120,11 @@ int gScreenHeight = 400;
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE);
-	//glClearColor(1.0, 1.0, 1.0, 0.0);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+	glClearColor(1.0, 1.0, 1.0, 0.0);
 	
 	//Initialize both windows and share the keyboard function between them
-	UIWindow::Init(100, 100, gScreenWidth, gScreenHeight);
+	UIWindow::Init(100, 100, INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
 	UIWindow::GenerateFunction(GenerateFractal);
 	glutDisplayFunc(UIWindow::Display);
 	glutReshapeFunc(UIWindow::Reshape);
@@ -124,7 +132,7 @@ int main(int argc, char *argv[])
 	glutMotionFunc(UIWindow::Motion);
 	glutKeyboardFunc(Keyboard);
 
-	GenWindow::Init(100 + gScreenWidth + 50, 100, gScreenWidth, gScreenHeight);
+	GenWindow::Init(100 + INIT_SCREEN_WIDTH + 50, 100, INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
 	glutDisplayFunc(GenWindow::Display);
 	glutReshapeFunc(GenWindow::Reshape);
 	glutMouseFunc(GenWindow::Mouse);

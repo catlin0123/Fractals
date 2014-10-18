@@ -56,7 +56,7 @@ c:\> ./fractals
 Date          Modification
 ------------  --------------------------------------------------------------
 Oct 13, 2014  Initial setup of GitHub and project structure. Defined structs
-       12:38  for Point and TransformMatrix. Declared Init functions for
+    12:38 AM  for Point and TransformMatrix. Declared Init functions for
 			  GenWindow and UIWindow.
 			  Files added:
                +  Fractals.cpp
@@ -65,6 +65,16 @@ Oct 13, 2014  Initial setup of GitHub and project structure. Defined structs
 			   +  GenWindow.cpp
 			   +  UIWindow.h
 			   +  UIWindow.cpp
+
+Oct 17, 2014  Finalized setup of project. Classes are going to be "static"
+    08:36 PM  (at least as static as C++ allows) to allow for the member
+			  functions to act as callbacks with glut.
+			  Files modified:
+			   ~  Fractals.cpp
+			   ~  GenWindow.cpp
+			   ~  UIWindow.cpp
+			   ~  GenWindow.h
+			   ~  UIWindow.h
 @endverbatim
 *
 *****************************************************************************/
@@ -79,15 +89,72 @@ Oct 13, 2014  Initial setup of GitHub and project structure. Defined structs
 
 using namespace std;
 
-//Windows
-UIWindow DrawingWindow;
-GenWindow FractalWindow;
+//Callbacks
+void Keyboard(unsigned char key, int x, int y);
+void GenerateFractal();
+
+//Constants
+const unsigned char ESCAPE_KEY = 27;
 
 //Global Data
 int gScreenWidth = 400;
 int gScreenHeight = 400;
 
-int main()
+/**************************************************************************//**
+* @author Paul Blasi, Caitlin Taggart
+*
+* @par Description:
+* Main execution point of the app. Initializes the windows.
+*
+* @returns Execution outcome.
+*
+*****************************************************************************/
+int main(int argc, char *argv[])
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE);
+	//glClearColor(1.0, 1.0, 1.0, 0.0);
+	
+	//Initialize both windows and share the keyboard function between them
+	UIWindow::Init(100, 100, gScreenWidth, gScreenHeight);
+	UIWindow::GenerateFunction(GenerateFractal);
+	glutDisplayFunc(UIWindow::Display);
+	glutReshapeFunc(UIWindow::Reshape);
+	glutMouseFunc(UIWindow::Mouse);
+	glutMotionFunc(UIWindow::Motion);
+	glutKeyboardFunc(Keyboard);
+
+	GenWindow::Init(100 + gScreenWidth + 50, 100, gScreenWidth, gScreenHeight);
+	glutDisplayFunc(GenWindow::Display);
+	glutReshapeFunc(GenWindow::Reshape);
+	glutMouseFunc(GenWindow::Mouse);
+	glutKeyboardFunc(Keyboard);
+
+	glutMainLoop();
+
+	return 0;
+}
+
+/**************************************************************************//**
+* @author Paul Blasi
+*
+* @par Description:
+* if escape is pressed, exits the application.
+*
+* @param[in] key - the key that was pressed
+* @param[in] x - the x position of the mouse when the key was pressed
+* @param[in] y - the y position of the mouse when the key was pressed
+*
+*****************************************************************************/
+void Keyboard(unsigned char key, int x, int y)
+{
+	if (key == ESCAPE_KEY)
+	{
+		glutLeaveMainLoop();
+	}
+}
+
+void GenerateFractal()
 {
 
 }

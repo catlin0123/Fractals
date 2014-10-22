@@ -12,14 +12,13 @@ using namespace std;
 class GenWindow
 {
 public:
-	//Members
-	static vector<TransformMatrix> Transforms;
-
 	//Functions
 	static void Init(int x, int y, int width, int height);
+    static void Idle(); 
 	static void Display();
 	static void Reshape(int width, int height);
 	static void Mouse(int button, int state, int x, int y);
+    static void GenerateFractal(); 
 
 private:
 	GenWindow();
@@ -27,6 +26,12 @@ private:
 
 	//Members
 	static int _windowID;
+    static Point idle;
+    static bool generate;
+    static vector<TransformMatrix> Transforms;
+    static vector<Point> points; 
+    static void SolveEquations(); 
+    static Point TransformPoint(Point p, TransformMatrix m);
 
 	//Functions
 };

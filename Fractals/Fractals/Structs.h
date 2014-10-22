@@ -4,6 +4,17 @@
 struct Point
 {
 	double x, y;
+
+    Point::Point(double dx, double dy)
+    {
+        x = dx; 
+        y = dy; 
+    }
+
+    Point::Point()
+    {
+        Point(0, 0); 
+    }
 };
 
 struct TransformMatrix

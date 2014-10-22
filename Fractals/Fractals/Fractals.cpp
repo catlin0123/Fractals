@@ -137,6 +137,7 @@ int main(int argc, char *argv[])
 	glutReshapeFunc(GenWindow::Reshape);
 	glutMouseFunc(GenWindow::Mouse);
 	glutKeyboardFunc(Keyboard);
+    glutIdleFunc(GenWindow::Idle);
 
 	glutMainLoop();
 
@@ -164,5 +165,5 @@ void Keyboard(unsigned char key, int x, int y)
 
 void GenerateFractal()
 {
-
+    GenWindow::GenerateFractal(); 
 }

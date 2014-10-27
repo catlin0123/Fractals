@@ -285,7 +285,7 @@ void GenWindow::GenerateFractal(vector<vector<double> > transforms, vector<Point
     idle.y = 0; 
 
     //generate the first few tranformed points 
-    for (int i = 0; i < transforms.size() * transforms.size(); i++)
+    for (int i = 0; i < 16; i++)
     {
         int random = rand() % Transforms.size();
         idle = TransformPoint(idle, Transforms[random]);

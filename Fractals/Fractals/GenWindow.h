@@ -18,7 +18,7 @@ public:
 	static void Display();
 	static void Reshape(int width, int height);
 	static void Mouse(int button, int state, int x, int y);
-    static void GenerateFractal(); 
+    static void GenerateFractal(vector<vector<double> > transforms, vector<Point>, double color[]);
 
 private:
 	GenWindow();
@@ -26,12 +26,16 @@ private:
 
 	//Members
 	static int _windowID;
-    static Point idle;
+    static ColorPoint idle;
     static bool generate;
+    static double color[3];
     static vector<TransformMatrix> Transforms;
     static vector<Point> points; 
-    static void SolveEquations(); 
-    static Point TransformPoint(Point p, TransformMatrix m);
+    static vector<ColorPoint> genPoints; 
+
+
+    static void SolveEquations(vector<vector<double> > transforms);
+    static ColorPoint TransformPoint(ColorPoint p, TransformMatrix m);
 
 	//Functions
 };

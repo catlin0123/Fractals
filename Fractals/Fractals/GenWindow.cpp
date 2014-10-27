@@ -4,10 +4,12 @@
 
 //Static member definitions
 int GenWindow::_windowID = 0;
-Point GenWindow::idle = Point(0, 0); 
+ColorPoint GenWindow::idle = ColorPoint(); 
 bool GenWindow::generate = false; 
+double GenWindow::color[3] = { 0.0, 0.0, 0.0 }; 
 vector<TransformMatrix> GenWindow::Transforms = vector<TransformMatrix>(); 
 vector<Point> GenWindow::points = vector<Point>(); 
+vector<ColorPoint> GenWindow::genPoints = vector<ColorPoint>(); 
 
 void GenWindow::Init(int x, int y, int width, int height)
 {
@@ -15,15 +17,30 @@ void GenWindow::Init(int x, int y, int width, int height)
 	glutInitWindowPosition(x, y);
 	_windowID = glutCreateWindow("Fractal");
     srand(1943203);
-    generate = false; 
-    _windowID = 0; 
+    generate = false;
 }
 
 void GenWindow::Display()
 {
 	glutSetWindow(_windowID);
-
 	glClear(GL_COLOR_BUFFER_BIT);
+
+    glBegin(GL_LINE_STRIP);
+        glColor3dv(color);
+        for (unsigned int i = 0; i < points.size(); i++)
+        {
+            glVertex2d(points[i].x, points[i].y);
+        }
+     glEnd(); 
+
+     glBegin(GL_POINTS);
+         for (unsigned int i = 0; i < genPoints.size(); i++)
+         {
+             ColorPoint pnt = genPoints[i]; 
+             glColor3d(pnt.r, pnt.g, pnt.b);
+             glVertex2d(pnt.x, pnt.y);
+         }
+     glEnd(); 
 
 	glutSwapBuffers();
 }
@@ -49,47 +66,34 @@ void GenWindow::Mouse(int button, int state, int x, int y)
 
 GenWindow::GenWindow()
 {
-    //set window? 
-    for (auto p : points)
-    {
-        //set the color to the color of the point
-        glColor3d(1, 1, 1);
-        glBegin(GL_POINT); 
-            glVertex2d(p.x, p.y); 
-        glEnd();
-    }
 }
 
 GenWindow::~GenWindow()
 {
 }
 
-Point GenWindow::TransformPoint(Point p, TransformMatrix m)
+ColorPoint GenWindow::TransformPoint(ColorPoint p, TransformMatrix m)
 {
-    Point v; 
+    ColorPoint v; 
     v.x = m.a * p.x + m.b * p.y + m.c; 
     v.y = m.d * p.x + m.e * p.y + m.f; 
     return v; 
 }
 
-void GenWindow::SolveEquations()
+void GenWindow::SolveEquations(vector<vector<double> > transforms)
 {
-    double x1 = 0;// = CoordsTable[0][0];
-    double y1 = 0;// = CoordsTable[0][1];
-    double x2 = 0;// = CoordsTable[0][2];
-    double y2 = 0;// = CoordsTable[0][3];
-    double x3 = 0;// = CoordsTable[0][4];
-    double y3 = 0;// = CoordsTable[0][5];
+    double x1 = transforms[0][0]; double y1 = transforms[0][1];
+    double x2 = transforms[0][2]; double y2 = transforms[0][3];
+    double x3 = transforms[0][4]; double y3 = transforms[0][5];
+
     // for each affine transform
-    for (int i = 1; i < 0/*CoordsTable.size()*/; i++)
+    for (unsigned int i = 1; i < transforms.size(); i++)
     {
         // 3 transformed points
-        double r1 = 0;// = CoordsTable[i + 1][0];
-        double s1 = 0;// = CoordsTable[i + 1][1];
-        double r2 = 0;// = CoordsTable[i + 1][2];
-        double s2 = 0;// = CoordsTable[i + 1][3];
-        double r3 = 0;// = CoordsTable[i + 1][4];
-        double s3 = 0;// = CoordsTable[i + 1][5];
+        double r1 = transforms[i][0]; double s1 = transforms[i][1];
+        double r2 = transforms[i][2]; double s2 = transforms[i][3];
+        double r3 = transforms[i][4]; double s3 = transforms[i][5];
+
         // solve for the affine coefficients
         TransformMatrix m;
         double denom = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2); 
@@ -106,11 +110,13 @@ void GenWindow::SolveEquations()
         m.e = m.e / denom;
         m.f = s1 * (x2 * y3 - y2 * x3) + s2 * (x3 * y1 - y3 * x1) + s3 *(x1 * y2 - x2 * y1);
         m.f = m.f / denom;
-        //m.color = CoordsTable[i + 1][6];
+
+        m.red = transforms[i][6]; 
+        m.green = transforms[i][7];
+        m.blue = transforms[i][8]; 
 
         Transforms.push_back(m); 
     }
-
 }
 
 void GenWindow::Idle()
@@ -119,25 +125,29 @@ void GenWindow::Idle()
     {
         int random = rand() % Transforms.size();
         idle = TransformPoint(idle, Transforms[random]);
-        points.push_back(idle); 
-        //if needed add the color to another vector
+        idle.r = Transforms[random].red;
+        idle.g = Transforms[random].green; 
+        idle.b = Transforms[random].blue; 
+        genPoints.push_back(idle); 
     }
 }
 
-void GenWindow::GenerateFractal()
+void GenWindow::GenerateFractal(vector<vector<double> > transforms, vector<Point>, double color[])
 {
-    SolveEquations(); 
+    SolveEquations(transforms); 
     idle.x = 0; 
     idle.y = 0; 
 
-    //set the window
-    //plot the original graph in the original color; 
+
 
     for (int i = 0; i < 16; i++)
     {
         int random = rand() % Transforms.size();
         idle = TransformPoint(idle, Transforms[random]);
     }
+    idle.r = color[0]; 
+    idle.g = color[1]; 
+    idle.b = color[2]; 
 
     generate = true; 
 }

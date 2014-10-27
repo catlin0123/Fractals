@@ -20,6 +20,26 @@ struct Point
 struct TransformMatrix
 {
 	double a, b, c, d, e, f;
+    double red, green, blue; 
+};
+
+struct ColorPoint
+{
+    double x, y, r, g, b; 
+
+    ColorPoint::ColorPoint(double xpnt, double ypnt, double rcol, double gcol, double bcol)
+    {
+        x = xpnt;
+        y = ypnt; 
+        r = rcol;
+        g = gcol; 
+        b = bcol; 
+    }
+
+    ColorPoint::ColorPoint()
+    {
+        ColorPoint(0, 0, 0, 0, 0); 
+    }
 };
 
 #endif

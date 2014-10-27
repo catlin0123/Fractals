@@ -253,6 +253,7 @@ void GenWindow::Idle()
             genPoints.push_back(idle);
         }
         //ask glut to redisplay
+        glutSetWindow(_windowID);
         glutPostRedisplay(); 
     }
 }
@@ -290,5 +291,6 @@ void GenWindow::GenerateFractal(vector<vector<double> > transforms, vector<Point
     generate = true; 
 
     //tell glut that it should redisplay points
+    glutSetWindow(_windowID);
     glutPostRedisplay(); 
 }

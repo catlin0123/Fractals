@@ -164,8 +164,5 @@ void Keyboard(unsigned char key, int x, int y)
 
 void GenerateFractal()
 {
-    vector < vector<double>> transformPoints = vector<vector<double>>(); 
-    vector<Point> shape = vector<Point>();
-    double color[3] = { 0.0, 0.0, 0.0 };
-    GenWindow::GenerateFractal(transformPoints, shape, color); 
+    GenWindow::GenerateFractal(UIWindow::CoordTable, UIWindow::DrawnShape, UIWindow::ShapeColor); 
 }

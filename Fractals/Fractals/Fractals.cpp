@@ -135,7 +135,6 @@ int main(int argc, char *argv[])
 	GenWindow::Init(100 + INIT_SCREEN_WIDTH + 50, 100, INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
 	glutDisplayFunc(GenWindow::Display);
 	glutReshapeFunc(GenWindow::Reshape);
-	glutMouseFunc(GenWindow::Mouse);
 	glutKeyboardFunc(Keyboard);
     glutIdleFunc(GenWindow::Idle);
 

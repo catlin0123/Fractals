@@ -61,7 +61,7 @@ void GenWindow::Init(int x, int y, int width, int height)
 	glutInitWindowSize(width, height);
 	glutInitWindowPosition(x, y);
 	_windowID = glutCreateWindow("Fractal");
-    srand(1943203);
+    srand(time(NULL));
     generate = false;
 }
 
@@ -204,14 +204,14 @@ void GenWindow::SolveEquations(vector<vector<double> > transforms)
         m.a = r1 * (y2 - y3) + r2 * (y3 - y1) + r3 * (y1 - y2); 
         m.a = m.a / denom; 
         m.b = r1 * (x2 - x3) + r2 * (x3 - x1) + r3 * (x1 - x2); 
-        m.b = m.b / denom; 
+        m.b = m.b /  - denom; 
         m.c = r1 * (x2 * y3 - y2 * x3) + r2 * (x3 * y1 - y3 * x1) + r3 *(x1 * y2 - x2 * y1);
         m.c = m.c / denom; 
 
         m.d = s1 * (y2 - y3) + s2 * (y3 - y1) + s3 * (y1 - y2);
         m.d = m.d / denom;
         m.e = s1 * (x2 - x3) + s2 * (x3 - x1) + s3 * (x1 - x2);
-        m.e = m.e / denom;
+        m.e = m.e / - denom;
         m.f = s1 * (x2 * y3 - y2 * x3) + s2 * (x3 * y1 - y3 * x1) + s3 *(x1 * y2 - x2 * y1);
         m.f = m.f / denom;
 
@@ -230,11 +230,13 @@ void GenWindow::SolveEquations(vector<vector<double> > transforms)
 *
 * @par Description:
 * This is the idle call back function. This generates the points that create
-* the fractal and then calls redisplay. Does this ten points at a time. 
+* the fractal and then calls redisplay. Does this ten points at a time. Once
+* this function is called and worked on for more than 100000 points it stops. 
 *****************************************************************************/
 void GenWindow::Idle()
 {
-    if (generate)
+    static int j = 0; 
+    if (generate && j < 100000)
     {
         for (int i = 0; i < 10; i++)
         {
@@ -251,6 +253,7 @@ void GenWindow::Idle()
             
             //add it to the generated points list 
             genPoints.push_back(idle);
+            j++; 
         }
         //ask glut to redisplay
         glutSetWindow(_windowID);
@@ -282,7 +285,7 @@ void GenWindow::GenerateFractal(vector<vector<double> > transforms, vector<Point
     idle.y = 0; 
 
     //generate the first few tranformed points 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < transforms.size() * transforms.size(); i++)
     {
         int random = rand() % Transforms.size();
         idle = TransformPoint(idle, Transforms[random]);

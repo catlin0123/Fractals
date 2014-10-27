@@ -212,7 +212,10 @@ void UIWindow::Motion(int x, int y)
 		{
 		case UIWindow::DRAWING:
 		{
-			DrawnShape.push_back(Point((100.0 / Width * x), 100 - (100.0 / Height * y)));
+			if (x >= 0 && x <= Width && y >= 0 && y <= Height)
+			{
+				DrawnShape.push_back(Point((100.0 / Width * x), 100 - (100.0 / Height * y)));
+			}
 			break;
 		}
 		case UIWindow::ADDING_REFERENCE:
@@ -225,13 +228,17 @@ void UIWindow::Motion(int x, int y)
 		}
 		}
 	}
-
+	glutSetWindow(_windowID);
 	glutPostRedisplay();
 }
 
 void UIWindow::MenuState(int state)
 {
 	_menuState = (state == GLUT_MENU_IN_USE);
+	/*if (_menuState == true)
+	{
+		_state = NONE;
+	}*/
 }
 
 void UIWindow::Menu(int value)
@@ -308,6 +315,7 @@ void UIWindow::Menu(int value)
 		break;
 	}
 
+	glutSetWindow(_windowID);
 	glutPostRedisplay();
 }
 

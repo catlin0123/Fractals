@@ -34,6 +34,7 @@ public:
 
 	enum State
 	{
+		NONE,
 		DRAWING,
 		ADDING_REFERENCE,
 		ADDING_TRANSFORM
